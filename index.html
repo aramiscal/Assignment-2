@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link  />
 </head>
-<body>
-    
+<body onload="getData()">
+    <script>
+        async function getData() {
+            console.log("Page has loaded");
+            const url = "https://datausa.io/api/data?drilldowns=Nation&measures=Population";
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+                console.log(json);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }   
+    </script>
 </body>
 </html>
