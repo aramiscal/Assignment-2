@@ -1,27 +1,44 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link  />
 </head>
-<body onload="getData()">
-    <script>
-        async function getData() {
-            console.log("Page has loaded");
-            const url = "https://datausa.io/api/data?drilldowns=Nation&measures=Population";
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const json = await response.json();
-                console.log(json);
-            } catch (error) {
-                console.error(error.message);
-            }
-        }   
+<body>
+    <h1>US Population</h1>
+    <table id="data-table" border="2"> <!-- Data Table Instantiation -->
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Population</th>
+            </tr>
+        </thead>
+        <tbody id="table-rows"> <!-- The data will be put here --> </tbody>
+    </table>
+
+    <script> // Data fetching using JavaScript
+        const api = "https://datausa.io/api/data?drilldowns=Nation&measures=Population";
+        
+        async function fetchData() {
+            const response = await fetch(api); // Should implement a 'Catch' function in case of an error
+            const data = await response.json();
+            const tableData = data.data; 
+
+            const tableBody = document.getElementById('table-rows'); // Retrieve the 'table-row' instance in the html
+
+            tableData.forEach(item => { // Loop through the API array
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = item.Year; 
+                row.insertCell(1).textContent = item.Population;
+                console.log(item);
+            });
+        }
+        
+        (() => { // IIFE 
+            fetchData();
+        })();
     </script>
+
 </body>
 </html>
